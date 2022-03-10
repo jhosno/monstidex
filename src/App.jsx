@@ -1,45 +1,38 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import styled from "@emotion/styled";
+
+
+import Main from "./layouts/Main";
+
+import Monstie from "./pages/Monstie";
+import Home from "./pages/Home";
+import Doc from "./pages/Doc";
+import About from "./pages/About";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [monsties, setMonsties] = useState({});
+  useEffect(async () => {
+    const url = "https://monstidex.herokuapp.com/monsties";
+
+    const response = await fetch(url);
+    const result = await response.json();
+    setMonsties(result);
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/"  element={<Main  />}>
+          <Route index element={<Home />} ></Route> 
+          <Route path="doc" element={<Doc />}></Route> 
+          <Route path="about" element={<About />}></Route> 
+          <Route path=":id" element={<Monstie />}></Route> 
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
