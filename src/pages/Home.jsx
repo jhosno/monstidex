@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import BgList from "../assets/main_bg.png";
 import BgImg from "../assets/navi_line_block.png";
+import { Link, useLocation } from "react-router-dom";
+
 
 const HomeContainer = styled.div`
   display: flex;
@@ -69,7 +71,7 @@ const HomeImg = styled.div`
   }
 `;
 const Home = () => {
-  const [monsties, setMonsties] = useState({});
+  const [monsties, setMonsties] = useState([]);
   useEffect(async () => {
     const url = "https://monstidex.herokuapp.com/monsties";
 
@@ -86,14 +88,19 @@ const Home = () => {
         <HomeListH1>monsties</HomeListH1>
         <HomeListContent>
           {monsties.map((monstie) => (
-            
-            <HomeListItem>
-              <HomeListThumbnail
-                src={`https://monstidex.herokuapp.com/${monstie.thumbnail}`}
-                alt={monstie.descrip}
-              />
-              <p>{monstie.monster}</p>
-            </HomeListItem>
+            <Link
+              to={"/monstie/" + monstie.id}
+              key={monstie.id}
+            >
+
+              <HomeListItem>
+                <HomeListThumbnail
+                  src={`https://monstidex.herokuapp.com/${monstie.thumbnail}`}
+                  alt={monstie.descrip}
+                />
+                <p>{monstie.monster}</p>
+              </HomeListItem>
+            </Link>
           ))}
         </HomeListContent>
       </HomeList>
